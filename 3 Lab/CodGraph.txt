@@ -1,0 +1,61 @@
+digraph SemanticNetwork {
+    rankdir=LR;
+    size="10,8";
+    node [fontname="Arial"];
+
+    // Архетипы
+    node [shape=rectangle, style=filled, fillcolor=lightgreen];
+    АРХИТЕКТОР [label="АРХИТЕКТОР\n\nАналитичный,\nориентированный\nна детали"];
+    СТРАТЕГ [label="СТРАТЕГ\n\nВидит общую\nкартину,\nстратег"];
+    ЛИДЕР [label="ЛИДЕР\n\nПрирожденный\nруководитель"];
+    ВОИН [label="ВОИН\n\nЦелеустремленный\nисполнитель"];
+    ОПЕКУН [label="ОПЕКУН\n\nЭмпатичный,\nзаботливый"];
+    МИРОТВОРЕЦ [label="МИРОТВОРЕЦ\n\nДипломатичный,\nгармония"];
+    ТВОРЕЦ [label="ТВОРЕЦ\n\nТворческий,\nвоображение"];
+    ПРОВИДЕЦ [label="ПРОВИДЕЦ\n\nИнтуитивный,\nпроницательный"];
+
+    // Основные ценности
+    node [shape=ellipse, style=filled, fillcolor=lightblue];
+    justice [label="Справедливость\n\nОриентация на\nсправедливость\nили гармонию"];
+    planning [label="Планирование\n\nПредпочтение\nпланирования"];
+    action [label="Действие\n\nПредпочтение\nдействия"];
+    cooperation [label="Сотрудничество\n\nПредпочтение\nсотрудничества"];
+    creativity [label="Творчество\n\nПредпочтение\nтворчества"];
+
+    // Промежуточные ценности
+    node [shape=ellipse, style=filled, fillcolor="lightblue"];
+    empathy [label="Эмпатия\n\nГлубокая эмпатия"];
+    diplomacy [label="Дипломатия\n\nДипломатичность"];
+    imagination [label="Воображение\n\nБогатое воображение"];
+    intuition [label="Интуиция\n\nПроницательность"];
+
+    // Связи от ценностей к архетипам с подписями
+    justice -> АРХИТЕКТОР [label="ведет к\n(детализация)"];
+    justice -> СТРАТЕГ [label="ведет к\n(общая картина)"];
+    planning -> ЛИДЕР [label="ведет к\n(лидерство)"];
+    planning -> ВОИН [label="ведет к\n(исполнение)"];
+    cooperation -> ОПЕКУН [label="ведет к\n(забота)"];
+    cooperation -> МИРОТВОРЕЦ [label="ведет к\n(гармония)"];
+    creativity -> ТВОРЕЦ [label="ведет к\n(творчество)"];
+    creativity -> ПРОВИДЕЦ [label="ведет к\n(интуиция)"];
+
+    // Иерархия между ценностями с подписями
+    justice -> planning [label="включает", style=dashed, color=gray];
+    justice -> action [label="включает", style=dashed, color=gray];
+    cooperation -> empathy [label="проявляется как", style=dashed, color=gray];
+    cooperation -> diplomacy [label="проявляется как", style=dashed, color=gray];
+    creativity -> imagination [label="основано на", style=dashed, color=gray];
+    creativity -> intuition [label="основано на", style=dashed, color=gray];
+
+    // Связи промежуточных ценностей с архетипами с подписями
+    empathy -> ОПЕКУН [label="характеризует", style=dashed, color=gray];
+    diplomacy -> МИРОТВОРЕЦ [label="характеризует", style=dashed, color=gray];
+    imagination -> ТВОРЕЦ [label="определяет", style=dashed, color=gray];
+    intuition -> ПРОВИДЕЦ [label="определяет", style=dashed, color=gray];
+
+    // Дополнительные связи для ясности
+    planning -> АРХИТЕКТОР [label="требует", style=dotted, color=darkgray];
+    planning -> СТРАТЕГ [label="требует", style=dotted, color=darkgray];
+    action -> ЛИДЕР [label="реализуется через", style=dotted, color=darkgray];
+    action -> ВОИН [label="реализуется через", style=dotted, color=darkgray];
+}
