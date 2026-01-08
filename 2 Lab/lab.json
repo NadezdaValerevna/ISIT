@@ -1,0 +1,800 @@
+{
+  "metadata": {
+    "domain": "Психология личности",
+    "description": "Экспертная система для определения психологического типа личности на основе поведенческих паттернов",
+    "version": "1.1",
+    "model": "Интегрированная модель (MBTI + Big Five)"
+  },
+  "rules": [
+    {
+      "id": "get_energy_source",
+      "name": "Источник энергии",
+      "description": "Определяет, откуда человек черпает энергию",
+      "salience": 100,
+      "conditions": [
+        {"fact": "system_ready", "value": true},
+        {"fact": "energy_source", "exists": false}
+      ],
+      "actions": [
+        {"type": "ask_user", "question": "energy_source", "fact": "energy_source"}
+      ]
+    },
+    {
+      "id": "get_information_processing",
+      "name": "Обработка информации",
+      "description": "Определяет, как человек воспринимает информацию",
+      "salience": 95,
+      "conditions": [
+        {"fact": "energy_source", "exists": true},
+        {"fact": "information_processing", "exists": false}
+      ],
+      "actions": [
+        {"type": "ask_user", "question": "information_processing", "fact": "information_processing"}
+      ]
+    },
+    {
+      "id": "get_decision_making",
+      "name": "Принятие решений",
+      "description": "Определяет, как человек принимает решения",
+      "salience": 90,
+      "conditions": [
+        {"fact": "information_processing", "exists": true},
+        {"fact": "decision_making", "exists": false}
+      ],
+      "actions": [
+        {"type": "ask_user", "question": "decision_making", "fact": "decision_making"}
+      ]
+    },
+    {
+      "id": "get_lifestyle",
+      "name": "Стиль жизни",
+      "description": "Определяет, как человек организует свою жизнь",
+      "salience": 85,
+      "conditions": [
+        {"fact": "decision_making", "exists": true},
+        {"fact": "lifestyle", "exists": false}
+      ],
+      "actions": [
+        {"type": "ask_user", "question": "lifestyle", "fact": "lifestyle"}
+      ]
+    },
+    {
+      "id": "get_extraversion_level",
+      "name": "Уровень экстраверсии",
+      "description": "Определяет степень экстраверсии",
+      "salience": 80,
+      "conditions": [
+        {"fact": "lifestyle", "exists": true},
+        {"fact": "extraversion_level", "exists": false}
+      ],
+      "actions": [
+        {"type": "ask_user", "question": "extraversion_level", "fact": "extraversion_level"}
+      ]
+    },
+    {
+      "id": "get_conscientiousness",
+      "name": "Добросовестность",
+      "description": "Определяет уровень организованности и ответственности",
+      "salience": 75,
+      "conditions": [
+        {"fact": "extraversion_level", "exists": true},
+        {"fact": "conscientiousness", "exists": false}
+      ],
+      "actions": [
+        {"type": "ask_user", "question": "conscientiousness", "fact": "conscientiousness"}
+      ]
+    },
+    {
+      "id": "get_emotional_stability",
+      "name": "Эмоциональная стабильность",
+      "description": "Определяет уровень нейротизма/стабильности",
+      "salience": 70,
+      "conditions": [
+        {"fact": "conscientiousness", "exists": true},
+        {"fact": "emotional_stability", "exists": false}
+      ],
+      "actions": [
+        {"type": "ask_user", "question": "emotional_stability", "fact": "emotional_stability"}
+      ]
+    },
+    {
+      "id": "get_openness_experience",
+      "name": "Открытость опыту",
+      "description": "Определяет уровень креативности и любознательности",
+      "salience": 65,
+      "conditions": [
+        {"fact": "emotional_stability", "exists": true},
+        {"fact": "openness_experience", "exists": false}
+      ],
+      "actions": [
+        {"type": "ask_user", "question": "openness_experience", "fact": "openness_experience"}
+      ]
+    },
+    {
+      "id": "categorize_extrovert",
+      "name": "Категоризация экстраверта",
+      "description": "Определяет экстравертный тип",
+      "salience": 60,
+      "conditions": [
+        {"fact": "energy_source", "value": "extraversion"},
+        {"fact": "personality_category", "exists": false}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "personality_category", "value": "extrovert"}
+      ]
+    },
+    {
+      "id": "categorize_introvert",
+      "name": "Категоризация интроверта",
+      "description": "Определяет интровертный тип",
+      "salience": 60,
+      "conditions": [
+        {"fact": "energy_source", "value": "introversion"},
+        {"fact": "personality_category", "exists": false}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "personality_category", "value": "introvert"}
+      ]
+    },
+    {
+      "id": "categorize_sensor",
+      "name": "Категоризация сенсорика",
+      "description": "Определяет сенсорный тип восприятия",
+      "salience": 60,
+      "conditions": [
+        {"fact": "information_processing", "value": "sensing"},
+        {"fact": "perception_category", "exists": false}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "perception_category", "value": "sensor"}
+      ]
+    },
+    {
+      "id": "categorize_intuitive",
+      "name": "Категоризация интуитива",
+      "description": "Определяет интуитивный тип восприятия",
+      "salience": 60,
+      "conditions": [
+        {"fact": "information_processing", "value": "intuition"},
+        {"fact": "perception_category", "exists": false}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "perception_category", "value": "intuitive"}
+      ]
+    },
+    {
+      "id": "categorize_thinker",
+      "name": "Категоризация мыслителя",
+      "description": "Определяет логический тип принятия решений",
+      "salience": 60,
+      "conditions": [
+        {"fact": "decision_making", "value": "thinking"},
+        {"fact": "decision_category", "exists": false}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "decision_category", "value": "thinker"}
+      ]
+    },
+    {
+      "id": "categorize_feeler",
+      "name": "Категоризация чувствующего",
+      "description": "Определяет эмоциональный тип принятия решений",
+      "salience": 60,
+      "conditions": [
+        {"fact": "decision_making", "value": "feeling"},
+        {"fact": "decision_category", "exists": false}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "decision_category", "value": "feeler"}
+      ]
+    },
+    {
+      "id": "categorize_judger",
+      "name": "Категоризация судящего",
+      "description": "Определяет структурированный стиль жизни",
+      "salience": 60,
+      "conditions": [
+        {"fact": "lifestyle", "value": "judging"},
+        {"fact": "lifestyle_category", "exists": false}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "lifestyle_category", "value": "judger"}
+      ]
+    },
+    {
+      "id": "categorize_perceiver",
+      "name": "Категоризация воспринимающего",
+      "description": "Определяет гибкий стиль жизни",
+      "salience": 60,
+      "conditions": [
+        {"fact": "lifestyle", "value": "perceiving"},
+        {"fact": "lifestyle_category", "exists": false}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "lifestyle_category", "value": "perceiver"}
+      ]
+    },
+    {
+      "id": "mark_all_data_collected",
+      "name": "Отметка сбора всех данных",
+      "description": "Проверяет, что все необходимые данные собраны",
+      "salience": 55,
+      "conditions": [
+        {"fact": "energy_source", "exists": true},
+        {"fact": "information_processing", "exists": true},
+        {"fact": "decision_making", "exists": true},
+        {"fact": "lifestyle", "exists": true},
+        {"fact": "extraversion_level", "exists": true},
+        {"fact": "conscientiousness", "exists": true},
+        {"fact": "emotional_stability", "exists": true},
+        {"fact": "openness_experience", "exists": true},
+        {"fact": "all_data_collected", "exists": false}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "all_data_collected", "value": true}
+      ]
+    },
+    {
+      "id": "determine_mbti_type",
+      "name": "Определение типа MBTI",
+      "description": "Формирует четырехбуквенный тип MBTI",
+      "salience": 50,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "personality_category", "exists": true},
+        {"fact": "perception_category", "exists": true},
+        {"fact": "decision_category", "exists": true},
+        {"fact": "lifestyle_category", "exists": true},
+        {"fact": "mbti_type", "exists": false}
+      ],
+      "actions": [
+        {"type": "calculate_mbti_type"}
+      ]
+    },
+    {
+      "id": "diagnose_intj",
+      "name": "Диагностика INTJ",
+      "description": "Определяет характеристики стратега",
+      "salience": 45,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "mbti_type", "value": "INTJ"}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "diagnosis", "value": "INTJ (Стратег): аналитичный, целеустремленный, независимый. Сильные стороны: стратегическое мышление, решительность. Слабые стороны: может быть непреклонным, эмоционально отстраненным."}
+      ]
+    },
+    {
+      "id": "diagnose_infj",
+      "name": "Диагностика INFJ",
+      "description": "Определяет характеристики адвоката",
+      "salience": 45,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "mbti_type", "value": "INFJ"}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "diagnosis", "value": "INFJ (Адвокат): проницательный, идеалистичный, целеустремленный. Сильные стороны: творческий, убедительный, альтруистичный. Слабые стороны: перфекционизм, избегание конфликтов."}
+      ]
+    },
+    {
+      "id": "diagnose_entp",
+      "name": "Диагностика ENTP",
+      "description": "Определяет характеристики полемиста",
+      "salience": 45,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "mbti_type", "value": "ENTP"}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "diagnosis", "value": "ENTP (Полемист): изобретательный, любознательный, энергичный. Сильные стороны: быстрый ум, адаптивность, обаяние. Слабые стороны: может быть несобранным, нетерпеливым к рутине."}
+      ]
+    },
+    {
+      "id": "diagnose_enfj",
+      "name": "Диагностика ENFJ",
+      "description": "Определяет характеристики тренера",
+      "salience": 45,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "mbti_type", "value": "ENFJ"}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "diagnosis", "value": "ENFJ (Тренер): харизматичный, вдохновляющий, альтруистичный. Сильные стороны: лидерские качества, эмпатия, коммуникабельность. Слабые стороны: чрезмерная идеализация, чувствительность к критике."}
+      ]
+    },
+    {
+      "id": "diagnose_istj",
+      "name": "Диагностика ISTJ",
+      "description": "Определяет характеристики инспектора",
+      "salience": 45,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "mbti_type", "value": "ISTJ"}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "diagnosis", "value": "ISTJ (Инспектор): практичный, ответственный, традиционный. Сильные стороны: надежность, трудолюбие, внимание к деталям. Слабые стороны: негибкость, сопротивление изменениям."}
+      ]
+    },
+    {
+      "id": "diagnose_isfp",
+      "name": "Диагностика ISFP",
+      "description": "Определяет характеристики художника",
+      "salience": 45,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "mbti_type", "value": "ISFP"}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "diagnosis", "value": "ISFP (Художник): гибкий, чуткий, тактильный. Сильные стороны: креативность, гармония, практичность. Слабые стороны: избегание конфликтов, неструктурированность."}
+      ]
+    },
+    {
+      "id": "diagnose_estp",
+      "name": "Диагностика ESTP",
+      "description": "Определяет характеристики предпринимателя",
+      "salience": 45,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "mbti_type", "value": "ESTP"}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "diagnosis", "value": "ESTP (Предприниматель): энергичный, прагматичный, спонтанный. Сильные стороны: находчивость, смелость, практичность. Слабые стороны: импульсивность, нетерпеливость к теории."}
+      ]
+    },
+    {
+      "id": "diagnose_esfj",
+      "name": "Диагностика ESFJ",
+      "description": "Определяет характеристики консула",
+      "salience": 45,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "mbti_type", "value": "ESFJ"}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "diagnosis", "value": "ESFJ (Консул): заботливый, социальный, ответственный. Сильные стороны: преданность, практичность, теплые отношения. Слабые стороны: потребность в одобрении, сопротивление изменениям."}
+      ]
+    },
+    {
+      "id": "diagnose_istp",
+      "name": "Диагностика ISTP",
+      "description": "Определяет характеристики виртуоза",
+      "salience": 44,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "mbti_type", "value": "ISTP"}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "diagnosis", "value": "ISTP (Виртуоз): практичный, аналитичный, спонтанный. Сильные стороны: решение проблем, адаптивность, технические навыки. Слабые стороны: рисковость, нетерпеливость к правилам."}
+      ]
+    },
+    {
+      "id": "diagnose_isfj",
+      "name": "Диагностика ISFJ",
+      "description": "Определяет характеристики защитника",
+      "salience": 44,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "mbti_type", "value": "ISFJ"}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "diagnosis", "value": "ISFJ (Защитник): заботливый, ответственный, традиционный. Сильные стороны: преданность, практичность, внимание к деталям. Слабые стороны: скромность, сопротивление изменениям."}
+      ]
+    },
+    {
+      "id": "diagnose_intp",
+      "name": "Диагностика INTP",
+      "description": "Определяет характеристики логика",
+      "salience": 44,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "mbti_type", "value": "INTP"}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "diagnosis", "value": "INTP (Логик): инновационный, аналитичный, независимый. Сильные стороны: логическое мышление, креативность, объективность. Слабые стороны: отстраненность, прокрастинация."}
+      ]
+    },
+    {
+      "id": "diagnose_infp",
+      "name": "Диагностика INFP",
+      "description": "Определяет характеристики посредника",
+      "salience": 44,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "mbti_type", "value": "INFP"}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "diagnosis", "value": "INFP (Посредник): идеалистичный, творческий, чуткий. Сильные стороны: эмпатия, креативность, преданность идеалам. Слабые стороны: нереалистичные ожидания, самокритичность."}
+      ]
+    },
+    {
+      "id": "diagnose_entj",
+      "name": "Диагностика ENTJ",
+      "description": "Определяет характеристики командира",
+      "salience": 44,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "mbti_type", "value": "ENTJ"}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "diagnosis", "value": "ENTJ (Командир): решающий, стратегический, энергичный. Сильные стороны: лидерство, решительность, эффективность. Слабые стороны: нетерпимость, чрезмерная требовательность."}
+      ]
+    },
+    {
+      "id": "diagnose_enfp",
+      "name": "Диагностика ENFP",
+      "description": "Определяет характеристики борца",
+      "salience": 44,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "mbti_type", "value": "ENFP"}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "diagnosis", "value": "ENFP (Борец): энтузиаст, творческий, общительный. Сильные стороны: креативность, социальные навыки, оптимизм. Слабые стороны: неорганизованность, чрезмерная эмоциональность."}
+      ]
+    },
+    {
+      "id": "diagnose_estj",
+      "name": "Диагностика ESTJ",
+      "description": "Определяет характеристики управляющего",
+      "salience": 44,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "mbti_type", "value": "ESTJ"}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "diagnosis", "value": "ESTJ (Управляющий): практичный, ответственный, традиционный. Сильные стороны: организация, надежность, лидерство. Слабые стороны: негибкость, чрезмерная критичность."}
+      ]
+    },
+    {
+      "id": "diagnose_esfp",
+      "name": "Диагностика ESFP",
+      "description": "Определяет характеристики развлекателя",
+      "salience": 44,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "mbti_type", "value": "ESFP"}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "diagnosis", "value": "ESFP (Развлекатель): спонтанный, энергичный, дружелюбный. Сильные стороны: практичность, общительность, оптимизм. Слабые стороны: неорганизованность, чувствительность к критике."}
+      ]
+    },
+    {
+      "id": "analyze_high_openness",
+      "name": "Анализ высокой открытости",
+      "description": "Анализирует креативность и любознательность",
+      "salience": 40,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "openness_experience", "operator": ">=", "value": 4}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "openness_analysis", "value": "Высокая открытость опыту: креативный, любознательный, готов к новому."}
+      ]
+    },
+    {
+      "id": "analyze_low_openness",
+      "name": "Анализ низкой открытости",
+      "description": "Анализирует традиционность и консерватизм",
+      "salience": 40,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "openness_experience", "operator": "<", "value": 3}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "openness_analysis", "value": "Низкая открытость опыту: традиционный, практичный, предпочитает знакомое."}
+      ]
+    },
+    {
+      "id": "analyze_medium_openness",
+      "name": "Анализ средней открытости",
+      "description": "Анализирует умеренную открытость",
+      "salience": 40,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "openness_experience", "value": 3},
+        {"fact": "openness_analysis", "exists": false}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "openness_analysis", "value": "Средняя открытость опыту: баланс между традиционностью и готовностью к новому."}
+      ]
+    },
+    {
+      "id": "analyze_high_conscientiousness",
+      "name": "Анализ высокой добросовестности",
+      "description": "Анализирует организованность и ответственность",
+      "salience": 40,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "conscientiousness", "operator": ">=", "value": 4}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "conscientiousness_analysis", "value": "Высокая добросовестность: организованный, ответственный, целеустремленный."}
+      ]
+    },
+    {
+      "id": "analyze_low_conscientiousness",
+      "name": "Анализ низкой добросовестности",
+      "description": "Анализирует спонтанность и гибкость",
+      "salience": 40,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "conscientiousness", "operator": "<", "value": 3}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "conscientiousness_analysis", "value": "Низкая добросовестность: спонтанный, гибкий, неструктурированный."}
+      ]
+    },
+    {
+      "id": "analyze_medium_conscientiousness",
+      "name": "Анализ средней добросовестности",
+      "description": "Анализирует умеренную добросовестность",
+      "salience": 40,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "conscientiousness", "value": 3},
+        {"fact": "conscientiousness_analysis", "exists": false}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "conscientiousness_analysis", "value": "Средняя добросовестность: баланс между организованностью и гибкостью."}
+      ]
+    },
+    {
+      "id": "analyze_high_neuroticism",
+      "name": "Анализ высокого нейротизма",
+      "description": "Анализирует эмоциональную чувствительность",
+      "salience": 40,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "emotional_stability", "operator": "<", "value": 3}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "emotional_analysis", "value": "Высокий нейротизм (низкая стабильность): эмоционально чувствительный, склонный к стрессу и тревоге."}
+      ]
+    },
+    {
+      "id": "analyze_low_neuroticism",
+      "name": "Анализ низкого нейротизма",
+      "description": "Анализирует эмоциональную устойчивость",
+      "salience": 40,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "emotional_stability", "operator": ">=", "value": 4}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "emotional_analysis", "value": "Низкий нейротизм (высокая стабильность): эмоционально устойчивый, спокойный, устойчивый к стрессу."}
+      ]
+    },
+    {
+      "id": "analyze_medium_neuroticism",
+      "name": "Анализ среднего нейротизма",
+      "description": "Анализирует умеренную эмоциональность",
+      "salience": 40,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "emotional_stability", "value": 3},
+        {"fact": "emotional_analysis", "exists": false}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "emotional_analysis", "value": "Средний нейротизм (умеренная стабильность): обычный уровень эмоциональной реактивности."}
+      ]
+    },
+    {
+      "id": "analyze_ambivert",
+      "name": "Анализ амбиверта",
+      "description": "Анализирует сбалансированность экстраверсии-интроверсии",
+      "salience": 40,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "extraversion_level", "value": 3}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "extraversion_analysis", "value": "Амбиверт: сбалансированная комбинация экстраверсии и интроверсии, адаптируется к ситуации."}
+      ]
+    },
+    {
+      "id": "analyze_strong_extrovert",
+      "name": "Анализ яркого экстраверта",
+      "description": "Анализирует выраженную экстраверсию",
+      "salience": 40,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "extraversion_level", "operator": ">=", "value": 4}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "extraversion_analysis", "value": "Яркий экстраверт: энергичный, общительный, ориентированный на внешний мир."}
+      ]
+    },
+    {
+      "id": "analyze_strong_introvert",
+      "name": "Анализ яркого интроверта",
+      "description": "Анализирует выраженную интроверсию",
+      "salience": 40,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "extraversion_level", "operator": "<=", "value": 2}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "extraversion_analysis", "value": "Яркий интроверта: созерцательный, сосредоточенный на внутреннем мире, ценит уединение."}
+      ]
+    },
+    {
+      "id": "generate_integrated_report",
+      "name": "Генерация интегрированного отчета",
+      "description": "Формирует комплексный отчет о личности",
+      "salience": 35,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "diagnosis", "exists": true},
+        {"fact": "openness_analysis", "exists": true},
+        {"fact": "conscientiousness_analysis", "exists": true},
+        {"fact": "emotional_analysis", "exists": true},
+        {"fact": "extraversion_analysis", "exists": true},
+        {"fact": "integrated_report", "exists": false}
+      ],
+      "actions": [
+        {"type": "generate_personality_report"}
+      ]
+    },
+    {
+      "id": "recommend_career_paths",
+      "name": "Рекомендации карьерных путей",
+      "description": "Предоставляет карьерные рекомендации на основе типа",
+      "salience": 30,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "mbti_type", "exists": true},
+        {"fact": "career_recommendation", "exists": false}
+      ],
+      "actions": [
+        {"type": "generate_career_recommendations"}
+      ]
+    },
+    {
+      "id": "recommend_communication_style",
+      "name": "Рекомендации стиля общения",
+      "description": "Предоставляет рекомендации по эффективной коммуникации",
+      "salience": 25,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "personality_category", "exists": true},
+        {"fact": "perception_category", "exists": true},
+        {"fact": "communication_recommendation", "exists": false}
+      ],
+      "actions": [
+        {"type": "generate_communication_recommendations"}
+      ]
+    },
+    {
+      "id": "recommend_personal_growth",
+      "name": "Рекомендации личностного роста",
+      "description": "Предоставляет рекомендации для развития",
+      "salience": 20,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "diagnosis", "exists": true},
+        {"fact": "emotional_analysis", "exists": true},
+        {"fact": "growth_recommendation", "exists": false}
+      ],
+      "actions": [
+        {"type": "generate_growth_recommendations"}
+      ]
+    },
+    {
+      "id": "final_summary",
+      "name": "Финальное резюме",
+      "description": "Формирует итоговое резюме анализа",
+      "salience": 10,
+      "conditions": [
+        {"fact": "all_data_collected", "value": true},
+        {"fact": "integrated_report", "exists": true},
+        {"fact": "career_recommendation", "exists": true},
+        {"fact": "communication_recommendation", "exists": true},
+        {"fact": "growth_recommendation", "exists": true},
+        {"fact": "final_summary", "exists": false}
+      ],
+      "actions": [
+        {"type": "assert", "fact": "final_summary", "value": "Анализ личности завершен. Используйте полученные insights для самопознания и развития."}
+      ]
+    }
+  ],
+  "questions": {
+    "energy_source": {
+      "text": "Откуда вы черпаете энергию?",
+      "type": "choice",
+      "options": ["extraversion", "introversion"],
+      "validation": "choice",
+      "explanation": "Экстраверты заряжаются от общения с людьми, интроверты - от времени наедине с собой"
+    },
+    "information_processing": {
+      "text": "Как вы воспринимаете информацию?",
+      "type": "choice",
+      "options": ["sensing", "intuition"],
+      "validation": "choice",
+      "explanation": "Сенсорики фокусируются на фактах и деталях, интуитивы - на закономерностях и возможностях"
+    },
+    "decision_making": {
+      "text": "Как вы принимаете решения?",
+      "type": "choice",
+      "options": ["thinking", "feeling"],
+      "validation": "choice",
+      "explanation": "Мыслители опираются на логику и объективность, чувствующие - на ценности и гармонию"
+    },
+    "lifestyle": {
+      "text": "Как вы организуете свою жизнь?",
+      "type": "choice",
+      "options": ["judging", "perceiving"],
+      "validation": "choice",
+      "explanation": "Судящие предпочитают структуру и планирование, воспринимающие - гибкость и спонтанность"
+    },
+    "extraversion_level": {
+      "text": "Оцените уровень экстраверсии (1-5, где 1 - яркий интроверт, 5 - яркий экстраверт):",
+      "type": "integer",
+      "validation": "range_1_5",
+      "explanation": "Шкала показывает степень ориентации на внешний мир и общительность"
+    },
+    "conscientiousness": {
+      "text": "Оцените уровень добросовестности (1-5, где 1 - спонтанный, 5 - организованный):",
+      "type": "integer",
+      "validation": "range_1_5",
+      "explanation": "Шкала показывает степень ответственности, дисциплины и организованности"
+    },
+    "emotional_stability": {
+      "text": "Оцените эмоциональную стабильность (1-5, где 1 - высокий нейротизм, 5 - высокая стабильность):",
+      "type": "integer",
+      "validation": "range_1_5",
+      "explanation": "Шкала показывает устойчивость к стрессу и эмоциональную уравновешенность"
+    },
+    "openness_experience": {
+      "text": "Оцените открытость новому опыту (1-5, где 1 - консервативный, 5 - очень открытый):",
+      "type": "integer",
+      "validation": "range_1_5",
+      "explanation": "Шкала показывает креативность, любознательность и готовность к изменениям"
+    }
+  },
+  "initial_facts": {
+    "system_ready": true
+  },
+  "mbti_mapping": {
+    "extraversion": "E",
+    "introversion": "I",
+    "sensing": "S",
+    "intuition": "N",
+    "thinking": "T",
+    "feeling": "F",
+    "judging": "J",
+    "perceiving": "P"
+  },
+  "career_recommendations": {
+    "INTJ": ["Стратегическое планирование", "Научные исследования", "ИТ-архитектура", "Консалтинг"],
+    "INFJ": ["Психология", "Коучинг", "Письмо", "Социальная работа"],
+    "ENTP": ["Предпринимательство", "Маркетинг", "Политика", "Журналистика"],
+    "ENFJ": ["Обучение", "Тренерство", "Управление персоналом", "Общественная деятельность"],
+    "ISTJ": ["Бухгалтерия", "Администрация", "Логистика", "Инженерия"],
+    "ISFP": ["Дизайн", "Искусство", "Музыка", "Социальные услуги"],
+    "ESTP": ["Продажи", "Спорт", "Полиция", "Мероприятия"],
+    "ESFJ": ["Медицина", "Образование", "Гостиничный бизнес", "Уход за детьми"]
+  },
+  "custom_actions": {
+    "calculate_mbti_type": {
+      "description": "Вычисляет четырехбуквенный код MBTI на основе категорий",
+      "implementation": "combine_categories_to_mbti"
+    },
+    "generate_personality_report": {
+      "description": "Генерирует интегрированный отчет о личности",
+      "implementation": "combine_all_analyses"
+    },
+    "generate_career_recommendations": {
+      "description": "Генерирует карьерные рекомендации на основе типа личности",
+      "implementation": "map_mbti_to_careers"
+    },
+    "generate_communication_recommendations": {
+      "description": "Генерирует рекомендации по эффективной коммуникации",
+      "implementation": "suggest_communication_strategies"
+    },
+    "generate_growth_recommendations": {
+      "description": "Генерирует рекомендации для личностного роста",
+      "implementation": "suggest_growth_areas"
+    }
+  }
+}
